@@ -1,34 +1,67 @@
-const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
+const { Schema, model, Types } = require('mongoose')
+const { format_date } = require('../utils/date-formatter')
 
-const thoughtSchema = new Schema({
-  thoughtText: {
-    type: String,
-    required: true,
-    validate: [({ length }) => length <= 280, '280 character limit exceeded.']
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxLength: 280
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (time) => format_date(time)
+    }
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: (timestamp) => dateFormat(timestamp)
-  },
-  username: {
-    type: String,
-    required: true
-  },
-  reactions: [reactionSchema]
-},
-{
-  toJSON: {
-    virtuals: true,
-    getters: true
+  {
+    toJSON: {
+      getters: true
+    },
+    id: false
   }
-}
-);
-thoughtSchema.virtual('reactionCount').get(function() {
+)
+
+const ThoughtSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxLength: 280
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (time) => format_date(time)
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    reactions: [reactionSchema]
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true
+    },
+    id: false
+  }
+)
+
+ThoughtSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;
 });
 
-const Thought = model('Thought', thoughtSchema);
+const Thought = model('Thought', ThoughtSchema)
 
-module.exports = Thought;
+module.exports = Thought
