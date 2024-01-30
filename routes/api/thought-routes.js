@@ -59,7 +59,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 
-// needs testing
 router.post('/:thoughtId/reactions', async (req, res) => {
   try {
     const thoughtData = await Thought.findOneAndUpdate(
