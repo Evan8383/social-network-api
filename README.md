@@ -3,6 +3,10 @@
 ## Project Overview
 This project implements a simple social media backend using Node.js, Express, and MongoDB, with the Mongoose ODM. The application allows users to create thoughts, add reactions to thoughts, manage user data, and establish friendships between users.
 
+## Links
+Live Demo Link: https://app.screencastify.com/v3/watch/lcYTsrFqqalz6xPJnMYX
+Repo Link: https://github.com/Evan8383/social-network-api
+
 ## File Structure
 - models/Thought.js: Defines the Thought model and its schema, including reactions.
 - models/User.js: Defines the User model and its schema, including relationships with thoughts and friends.
